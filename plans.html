@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Plans</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .plans {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .plan {
+            background: #ffffff;
+            color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .plan:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .plan h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        .plan p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+        .plan button {
+            background: #2575fc;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .plan button:hover {
+            background: #6a11cb;
+        }
+    </style>
+    <script>
+        function handleSelectPlan(plan, price) {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            console.log('Is Logged In:', isLoggedIn); // Debugging
+            if (!isLoggedIn) {
+                window.location.href = "/login.html";
+            } else {
+                window.location.href = `/basic-payment.html?plan=${plan}&price=${price}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Your Plan</h1>
+        <div class="plans">
+            <div class="plan">
+                <h2>Basic Plan</h2>
+                <p>Perfect for starters.</p>
+                <p>Price: ₹500</p>
+                <button onclick="handleSelectPlan('basic', 500)">Select Plan</button>
+            </div>
+            <div class="plan">
+                <h2>Advance Plan</h2>
+                <p>Great for growing businesses.</p>
+                <p>Price: ₹1800</p>
+                <button onclick="handleSelectPlan('advance', 1800)">Select Plan</button>
+            </div>
+            <div class="plan">
+                <h2>Premium Plan</h2>
+                <p>Best for power users.</p>
+                <p>Price: ₹3000</p>
+                <button onclick="handleSelectPlan('premium', 3000)">Select Plan</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
