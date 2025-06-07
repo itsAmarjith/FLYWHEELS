@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details - Flywheels Marketplace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* CSS styles - same as before - with added feedback message styles */
+        /* Reset some default browser styles and general body styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header Styling - Top Bar Alignment Adjusted */
+        header.top-header { /* Applying styles to header with class top-header */
+            background-color: #f0f2f5; /* Light grey background like in image */
+            padding: 10px 20px; /* Adjusted padding for top bar appearance */
+            display: flex;
+            justify-content: space-between; /* Space out logo, nav, button */
+            align-items: center; /* Vertically center items in header */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06); /* Lighter shadow */
+            margin: 0 auto; /* Center header on larger screens */
+            position: relative; /* Make header relative for absolute positioning of mobile menu */
+            /* max-width: 1400px;  You can add max-width if needed for very wide screens */
+        }
+
+        /* Hamburger Menu Icon */
+        .hamburger-menu {
+            display: none; /* Hidden on larger screens */
+            font-size: 1.5rem;
+            color: #555;
+            cursor: pointer;
+        }
+        .hamburger-menu:hover {
+            color: #007bff;
+        }
+
+        /* Header Left Section - Container for Logo (no Hamburger anymore) */
+        .header-left-section {
+            display: flex;
+            align-items: center;
+        }
+
+
+        .header-flywheels { /* Static logo/header text - Changed class name */
+            display: inline-block;
+            font-size: 1.6rem; /* Adjusted logo font size */
+            font-weight: bold;
+            margin: 0;
+            vertical-align: middle; /* Vertically align with nav and button */
+            line-height: 1; /* Ensure text line height doesn't add extra vertical space */
+            font-family: 'Arial Black', sans-serif; /* Different Font for logo */
+        }
+
+        .header-flywheels .fly-word { /* Style remains the same */
+            color: blue; /* Fly word color - set to blue as requested */
+        }
+
+        .header-flywheels .wheels-word { /* Style remains the same */
+            color: black; /* Wheels word color - set to black as requested */
+        }
+
+
+        /* Logo Icon */
+        .header-flywheels .logo-icon { /* Changed class name to match header */
+            display: inline-block;
+            width: 24px; /* Adjusted icon size */
+            height: 24px;
+            background-color: transparent; /* No background for icon */
+            color: blue; /* Icon color blue - changed to blue */
+            border-radius: 4px; /* Rounded corners for icon */
+            text-align: center;
+            line-height: 24px; /* Vertically center text in icon */
+            font-weight: bold;
+            margin-right: 8px; /* Space between icon and text */
+            font-size: 1.1rem; /* Icon text size */
+        }
+
+
+        header nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            vertical-align: middle;
+        }
+
+        header nav li {
+            margin-left: 20px; /* Adjusted spacing between nav items */
+        }
+
+        header nav a {
+            color: #555;
+            font-weight: 500;
+            font-size: 1rem; /* Adjusted nav link font size */
+            transition: color 0.2s ease-in-out;
+            padding: 8px 12px; /* Add padding around nav links for better click area */
+            border-radius: 4px; /* Optional: slightly rounded nav link background on hover */
+        }
+
+        header nav a:hover {
+            color: #007bff;
+            background-color: rgba(0, 123, 255, 0.1); /* Optional: light blue background on hover */
+        }
+
+        .submit-listing-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px; /* Adjusted button padding */
+            border-radius: 6px; /* Button border-radius */
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem; /* Button text size */
+            transition: background-color 0.2s ease-in-out;
+            vertical-align: middle;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-left: 20px; /* Add margin to separate button from nav links */
+        }
+
+        .submit-listing-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Mobile Nav Dropdown */
+        .mobile-nav-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #f0f2f5;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+            width: 200px; /* Adjust width as needed */
+            padding: 10px 0;
+            z-index: 10;
+        }
+
+        .mobile-nav-dropdown ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav-dropdown li {
+            padding: 10px 20px;
+        }
+
+        .mobile-nav-dropdown li a {
+            display: block;
+            color: #555;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .mobile-nav-dropdown li a:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+        }
+
+        /* Contact Info Div Style - Removed visibility control from here*/
+        #contactInfo {
+            position: relative; /* Changed from absolute to relative to be part of flow */
+            padding: 20px;
+            text-align: center; /* Center align contact info */
+            font-size: 0.9rem;
+            line-height: 1.4;
+            background-color: #f0f0f0; /* Light grey background for contact info */
+            margin-top: 40px; /* Add some space above contact info */
+            border-top: 1px solid #ccc; /* Separator line */
+        }
+
+        #contactInfo p {
+            margin: 8px 0;
+        }
+
+
+        /* Hero Section Styling - Responsive (Slightly Adjusted for smaller screens) */
+        .hero-section {
+            background-color: #f0f0f0;
+            padding: 60px 20px; /* Reduced padding for hero section on mobile */
+            text-align: center;
+        }
+
+        .hero-text h1 {
+            font-size: 2rem; /* Smaller hero heading for mobile */
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .hero-text h2 {
+            font-size: 1.2rem; /* Smaller hero subheading for mobile */
+            color: #777;
+            margin-bottom: 20px; /* Reduced margin for subheading on mobile */
+        }
+
+        .search-bar {
+            display: flex;
+            flex-direction: column; /* Stack search elements on smaller screens */
+            align-items: stretch; /* Stretch selects to full width on mobile */
+            gap: 10px; /* Reduced gap for search bar elements on mobile */
+            max-width: 100%; /* Full width search bar on mobile */
+            margin: 0 20px; /* Add some side margin for search bar on mobile */
+        }
+
+        .search-bar > div { /* Container for custom select */
+            position: relative; /* For positioning the popup */
+        }
+
+        .select-button {
+            display: flex;
+            justify-content: space-between; /* To space text and arrow */
+            align-items: center;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background-color: white; /* Add white background */
+        }
+
+        .select-button::after { /* Down arrow icon */
+            content: '\25BC'; /* Unicode down arrow */
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .select-popup {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 10; /* Ensure popup is on top */
+            display: none; /* Hidden by default */
+        }
+
+        .select-option {
+            padding: 10px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .select-option:hover {
+            background-color: #f0f0f0;
+        }
+
+
+        .search-bar select, /* Keep styling for other selects if needed */
+        .search-bar button {
+            padding: 10px 12px; /* Smaller padding for search elements on mobile */
+            border: 1px solid #ccc;
+            border-radius: 6px; /* More rounded search elements for mobile */
+            font-size: 0.9rem; /* Smaller font in search elements on mobile */
+            outline: none;
+        }
+
+        .search-bar select {
+            flex-grow: 1;
+        }
+
+        .search-bar button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* Browse By Type Section Styling - Responsive (Slightly Adjusted) */
+        .browse-by-type-section {
+            padding: 40px 20px; /* Reduced padding for browse section on mobile */
+            text-align: center;
+        }
+
+        .browse-by-type-section h2 {
+            font-size: 1.8rem; /* Smaller section heading for mobile */
+            margin-bottom: 25px; /* Reduced margin for section heading on mobile */
+            font-weight: bold;
+        }
+
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Narrower type items on mobile */
+            gap: 15px; /* Reduced gap in type grid on mobile */
+            max-width: 100%; /* Full width type grid on mobile */
+            margin: 0 20px; /* Add side margin for type grid on mobile */
+        }
+
+        .type-item {
+            background-color: white;
+            border-radius: 8px; /* More rounded type items for mobile */
+            padding: 20px 10px; /* Reduced padding in type items on mobile */
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06); /* Lighter shadow for mobile */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .type-item:hover {
+            transform: translateY(-3px); /* Less lift on hover for mobile */
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Less prominent shadow on hover for mobile */
+        }
+
+        .type-item i {
+            font-size: 1.8rem; /* Smaller icons for mobile */
+            color: #007bff;
+            margin-bottom: 8px; /* Reduced margin for icons on mobile */
+        }
+
+        .type-item p {
+            font-weight: 500;
+            font-size: 0.9rem; /* Smaller text in type items for mobile */
+            margin: 0;
+        }
+
+
+        /* Most Searched Cars Section Styling - Responsive (Slightly Adjusted) */
+        .most-searched-cars-section {
+            padding: 40px 20px; /* Reduced padding for searched cars section on mobile */
+            text-align: center;
+        }
+
+        .most-searched-cars-section h2 {
+            font-size: 1.8rem; /* Smaller section heading for mobile */
+            margin-bottom: 25px; /* Reduced margin for section heading on mobile */
+            font-weight: bold;
+        }
+
+        .car-list {
+            display: grid;
+            grid-template-columns: 1fr; /* Single column for car listings on small screens */
+            gap: 20px; /* Reduced gap in car list on mobile */
+            max-width: 100%; /* Full width car list on mobile */
+            margin: 0 20px; /* Add side margin for car list on mobile */
+        }
+
+        .car-card {
+            background-color: white;
+            border-radius: 10px; /* More rounded car cards for mobile */
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); /* Lighter shadow for mobile */
+            transition: box-shadow 0.2s ease-in-out;
+            /* Added data attributes for filtering */
+        }
+
+        .car-card:hover {
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1); /* Less prominent shadow on hover for mobile */
+        }
+
+        .car-image {
+            position: relative;
+        }
+
+        .car-image img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #eee;
+        }
+
+        .new-badge {
+            position: absolute;
+            top: 8px; /* Slightly adjust badge position for mobile */
+            left: 8px; /* Slightly adjust badge position for mobile */
+            background-color: #4CAF50;
+            color: white;
+            padding: 4px 8px; /* Smaller badge padding for mobile */
+            border-radius: 4px; /* More rounded badge for mobile */
+            font-size: 0.8rem; /* Smaller badge text for mobile */
+            font-weight: bold;
+        }
+
+        .certified-badge {
+            position: absolute;
+            top: 8px; /* Slightly adjust badge position for mobile */
+            left: 8px; /* Slightly adjust badge position for mobile */
+            background-color: #007bff;
+            color: white;
+            padding: 4px 8px; /* Smaller badge padding for mobile */
+            border-radius: 4px; /* More rounded badge for mobile */
+            font-size: 0.8rem; /* Smaller badge text for mobile */
+            font-weight: bold;
+        }
+
+        .car-details {
+            padding: 15px; /* Reduced padding for car details on mobile */
+        }
+
+        .car-details h3 {
+            font-size: 1.2rem; /* Smaller car title for mobile */
+            margin-bottom: 6px; /* Reduced margin for car title on mobile */
+            font-weight: bold;
+        }
+
+        .car-details p {
+            color: #777;
+            font-size: 0.9rem; /* Smaller car details text for mobile */
+            margin-bottom: 0;
+        }
+
+        .car-price {
+            padding: 10px 15px 15px; /* Reduced padding for car price on mobile */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+        }
+
+        .car-price p {
+            font-size: 1.4rem; /* Smaller car price text for mobile */
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .car-price a {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 14px; /* Even smaller "View Details" button for mobile */
+            border-radius: 6px; /* More rounded button for mobile */
+            font-size: 0.8rem; /* Smaller button text for mobile */
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .car-price a:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* Placeholder Image Styling (adjust height and object-fit as needed) */
+        .car-image img[src="car1.jpg"],
+        .car-image img[src="car2.jpg"],
+        .car-image img[src="car3.jpg"],
+        .car-image img[src="car4.jpg"],
+        .car-image img[src="car5.jpg"],
+        .car-image img[src="car6.jpg"],
+        .car-image img[src="car7.jpg"],
+        .car-image img[src="car8.jpg"],
+        .car-image img[src="car9.jpg"],
+        .car-image img[src="car10.jpg"],
+        .car-image img[src="car11.jpg"],
+        .car-image img[src="car12.jpg"] {
+            height: 180px; /* Reduced image height for mobile */
+            object-fit: cover;
+        }
+
+
+        /* Responsive Adjustments for Smaller Screens (Mobile Styles) */
+        @media (max-width: 768px) {
+            header.top-header { /* Further adjust header for very small screens if needed */
+                padding-left: 0; /* Set left padding to 0 - important */
+                padding-right: 10px; /* Keep right padding consistent */
+                flex-direction: row; /* Keep elements in a row, but control spacing */
+                align-items: center; /* Align items vertically in the center */
+                justify-content: flex-start; /* Align items to the start horizontally */
+                margin-left: 0; /* Ensure no left margin on the header itself */
+                margin-right: 0; /* Ensure no right margin on the header itself */
+            }
+            .header-left-section {
+                margin-left: 0; /* No left margin for header-left-section */
+                padding-left: 0; /* No left padding for header-left-section */
+            }
+            .hamburger-menu {
+                display: inline-block;
+                margin-right: 0;
+                margin-left: 0; /* Ensure no left margin on hamburger */
+                padding-left: 0; /* Ensure no left padding on hamburger */
+                padding-right: 0; /* Ensure no right padding on hamburger */
+            }
+            .header-flywheels { /* Changed class name to match header */
+                font-size: 1.3rem; /* Even smaller logo text on very small screens */
+                margin-left: 5px; /* Add a little space between hamburger and logo if needed, adjust as desired */
+            }
+            header nav ul {
+                display: none;
+            }
+            .submit-listing-btn {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+                margin-left: auto;
+                margin-right: 0;
+            }
+            .hero-section {
+                padding: 40px 20px;
+            }
+            .hero-text h1 {
+                font-size: 1.6rem;
+            }
+            .hero-text h2 {
+                font-size: 1rem;
+            }
+            .browse-by-type-section h2,
+            .most-searched-cars-section h2 {
+                font-size: 1.6rem;
+            }
+            .car-card {
+                border-radius: 8px;
+            }
+            .car-image img[src="car1.jpg"],
+            .car-image img[src="car2.jpg"],
+            .car-image img[src="car3.jpg"],
+            .car-image img[src="car4.jpg"],
+            .car-image img[src="car5.jpg"],
+            .car-image img[src="car6.jpg"],
+            .car-image img[src="car7.jpg"],
+            .car-image img[src="car8.jpg"],
+            .car-image img[src="car9.jpg"],
+            .car-image img[src="car10.jpg"],
+            .car-image img[src="car11.jpg"],
+            .car-image img[src="car12.jpg"] {
+                height: 150px;
+            }
+        }
+
+        /* Navigation Dropdown Styles */
+        .dropdown-nav {
+            position: relative;
+        }
+
+        .dropdown-nav > a { /* Style for the main nav link that triggers dropdown - optional visual cue */
+            padding-right: 25px; /* Make space for the dropdown arrow if you add one */
+            position: relative; /* For dropdown arrow positioning if you add one */
+        }
+
+        /* Optional: Add a small arrow indicator to the nav link */
+        .dropdown-nav > a::after {
+            content: '\25BE'; /* Downwards black triangle */
+            font-size: 0.7em;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+
+        .nav-dropdown {
+            position: absolute;
+            top: 100%; /* Position dropdown below the nav item */
+            left: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+            z-index: 10;
+            min-width: 200px; /* Minimum width of the dropdown */
+        }
+
+        .nav-dropdown ul {
+            list-style: none;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+        .nav-dropdown li {
+            padding: 8px 20px;
+        }
+
+        .nav-dropdown li a {
+            display: block; /* Make links fill the list item width */
+            color: #555;
+            font-size: 1rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .nav-dropdown li a:hover {
+            background-color: #f0f0f0;
+            color: #007bff;
+        }
+
+        /* Style for the typing cursor (optional, but looks nice) */
+        .typed-cursor {
+            opacity: 1;
+            animation: blink-cursor 0.7s steps(5) infinite;
+        }
+        @keyframes blink-cursor {
+            from, to { opacity: 0 }
+            50% { opacity: 1 }
+        }
+
+        /* Additional CSS for car detail view */
+        #carDetailView {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #carDetailView img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #carDetailView h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        #carDetailView p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        #carDetailView button.order-button {
+            background-color: #4CAF50; /* Green color for order button */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        #carDetailView button.order-button:hover {
+            background-color: #45a049;
+        }
+        .back-to-cars-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background-color 0.2s ease-in-out;
+            margin-top: 20px;
+        }
+
+        .back-to-cars-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* New styles for order feedback messages - ADDED HERE */
+        .order-processing {
+            color: #007bff;
+            display: none;
+            margin-top: 10px;
+        }
+        .order-error {
+            color: red;
+            display: none;
+            margin-top: 10px;
+        }
+        .order-confirmation {
+            color: green;
+            display: none;
+            margin-top: 10px;
+        }
+        .login-required {
+            color: red;
+            display: none;
+            margin-top: 10px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <div class="hamburger-menu" onclick="toggleMobileMenu()">
+            <i class="fa fa-bars"></i>
+        </div>
+        <div class="header-left-section">
+            <h1 class="header-flywheels"> <span class="logo-icon"><i class="fa-solid fa-gear"></i></span> <span class="fly-word">Fly</span>wheels
+            </h1>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>  <li><a href="#">Search</a></li>
+                <li class="dropdown-nav"> <a href="#" onclick="toggleNewDropdown()">New</a>
+                    <div class="nav-dropdown" id="newCarsDropdown">
+                        <ul>
+                            <li><a href="#">All New Cars</a></li>
+                            <li><a href="#">New SUVs</a></li>
+                            <li><a href="#">New Sedans</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="dropdown-nav"> <a href="#" onclick="toggleUsedDropdown()">Preowned</a>
+                    <div class="nav-dropdown" id="usedCarsDropdown">
+                        <ul>
+                            <li><a href="#">All Used Cars</a></li>
+                            <li><a href="#">Used SUVs</a></li>
+                            <li><a href="#">Used Sedans</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="signup.html">Signup</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="#" onclick="scrollToContact(); return false;">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="submit-listing-btn">Submit Listing</button>
+
+        <div class="mobile-nav-dropdown" id="mobileNavDropdown">
+            <ul>
+                <li><a href="index.html">Home</a></li> <li><a href="signup.html">Signup</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="#" onclick="scrollToContact(); return false;">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div id="carDetailView">
+        <button class="back-to-cars-button" onclick="window.location.href='index.html'">Back to Cars</button> <img src="" alt="Car Details Image" id="carDetailImage">
+        <h2 id="carDetailName">Car Name</h2>
+        <p id="carDetailDescription">Car Description</p>
+        <p id="carDetailPrice">Car Price</p>
+        <button class="order-button" onclick="placeOrder()">Order This Car</button>
+
+        <p class="order-processing">Processing your order...</p> <p class="order-error"></p> <p class="order-confirmation" style="display:none; color: green; margin-top: 10px;">You have placed an order for this car. Our team would get in touch with you shortly for more information.</p>
+        <p class="login-required">Please log in or sign up before ordering.</p>
+    </div>
+
+    <div id="contactInfo">
+        <p>Contact Us:</p>
+        <p>Phone: +1-555-123-4567</p>
+        <p>Email: <a href="mailto:flywheels123@gmail.com">flywheels123@gmail.com</a></p>
+    </div>
+
+    <script> /* Standard script tag - unchanged - for general page JS functions */
+        let isLoggedIn = false; // This will be updated by Firebase Auth state
+        let currentUser = null; // This will be set by Firebase Auth state
+
+        // Data for car details (Ideally, fetch from server, but keeping static for now)
+        const carDetailsData = {
+             '1': { name: 'Honda Model X', description: 'New Honda Model X SUV, 33 Miles, Electric, Manual', price: '$33333', image: 'https://i.postimg.cc/FHnn4nVj/IMG-20250320-WA0013.jpg' },
+            '2': { name: 'Toyota Camry', description: 'Used Toyota Camry Sedan, 45000 Miles, Petrol CVT', price: '$18000', image: 'https://i.postimg.cc/cL7546tK/color-Midnight-Black-Metallic.png-1.png' },
+            '3': { name: 'BMW 3 Series', description: 'Certified Pre-Owned BMW 3 Series Sedan, 22000 Miles, Petrol, Auto', price: '$28000', image: 'https://i.postimg.cc/NjTv8g9Y/79851401.jpg' },
+            '4': { name: 'Audi A4', description: 'New Audi A4 SUV, 10 Miles, Petrol, Auto', price: '$40000', image: 'https://i.postimg.cc/j2gt1Ztb/Audi-A4-jpg.webp' },
+            '5': { name: 'Mercedes C-Class', description: 'Used Mercedes C-Class Sedan, 60000 Miles, Diesel, Auto', price: '$22000', image: 'https://i.postimg.cc/7YFNzDrg/The-New-C-Class-front-side-profile1.jpg' },
+            '6': { name: 'Lexus RX', description: 'Certified Pre-Owned Lexus RX SUV, 30000 Miles, Hybrid, Auto', price: '$35000', image: 'https://i.postimg.cc/g0QhCHc3/Lexus-RXh-Promo-mobile-750x500-LEX-RXH-MY25-0005.jpg' },
+            '7': { name: 'Ford Mustang', description: 'Used Ford Mustang Convertible, 50000 Miles, Petrol, Manual', price: '$25000', image: 'https://i.postimg.cc/sX1RF3LB/Ford-Mustang-Shelby-GT500.jpg' },
+            '8': { name: 'Volkswagen Golf', description: 'New Volkswagen Golf Hatchback, 5 Miles, Petrol, Auto', price: '$27000', image: 'https://i.postimg.cc/59hjmrH5/2025-volkswagen-golf-gti-exterior-107-65b00ecf4496e.jpg' },
+            '9': { name: 'Hyundai Sonata', description: 'Certified Pre-Owned Hyundai Sonata Hybrid, 28000 Miles, Hybrid, Auto', price: '$23000', image: 'https://i.postimg.cc/SRJ8zYvy/new-hyundai-sonata-india-launch-price-3-2.jpg' },
+            '10': { name: 'Chevrolet Camaro', description: 'Used Chevrolet Camaro Coupe, 70000 Miles, Petrol, Manual', price: '$15000', image: 'https://i.postimg.cc/nhkzpc3T/2024-chevrolet-camaro-ss-collectors-edition-1-647e1933c6c20.jpg' },
+            '11': { name: 'Jaguar F-PACE', description: 'New Jaguar F-PACE Electric, 2 Miles, Electric, Auto', price: '$55000', image: 'https://i.postimg.cc/mk5fZJ0d/680.webp' },
+            '12': { name: 'Land Rover Range Rover', description: 'Certified Pre-Owned Land Rover Range Rover Truck, 35000 Miles, Diesel, Auto', price: '$48000', image: 'https://i.postimg.cc/nz5fp683/img-944x629-2024-08-08-16-10-53-237439.jpg' }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get carId from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const carId = urlParams.get('carId');
+
+            if (carId) {
+                showCarDetails(carId);
+            } else {
+                // Handle case where carId is missing in URL
+                alert('Car ID is missing from the URL.');
+                //window.location.href = 'index.html'; // Redirect to homepage if carId is missing
+            }
+        });
+
+
+        function showCarDetails(carId) {
+            const carDetail = carDetailsData[carId];
+            if (carDetail) {
+                document.getElementById('carDetailImage').src = carDetail.image;
+                document.getElementById('carDetailName').textContent = carDetail.name;
+                document.getElementById('carDetailDescription').textContent = carDetail.description;
+                document.getElementById('carDetailPrice').textContent = carDetail.price;
+                document.getElementById('orderConfirmationMessage').style.display = 'none';
+                document.getElementById('loginRequiredMessage').style.display = 'none';
+                document.querySelector('.order-processing').style.display = 'none'; // Hide processing message initially
+                document.querySelector('.order-error').style.display = 'none';       // Hide error message initially
+                document.querySelector('.order-confirmation').style.display = 'none'; // Hide confirmation message initially
+                document.querySelector('.login-required').style.display = 'none';       // Hide login required message initially
+            } else {
+                alert('Car details not found for ID: ' + carId);
+                //window.location.href = 'index.html'; // Redirect to homepage if car detail not found
+            }
+        }
+
+
+        function toggleMobileMenu() {
+            var mobileMenu = document.getElementById("mobileNavDropdown");
+            mobileMenu.style.display = mobileMenu.style.display === "none" ? "block" : "none";
+        }
+
+        function toggleNewDropdown() {
+            var dropdown = document.getElementById("newCarsDropdown");
+            toggleDropdownVisibility(dropdown);
+        }
+
+        function toggleUsedDropdown() {
+            var dropdown = document.getElementById("usedCarsDropdown");
+            toggleDropdownVisibility(dropdown);
+        }
+
+
+        function toggleDropdownVisibility(dropdown) {
+            if (dropdown.style.display === "none") {
+                closeAllNavDropdowns();
+                dropdown.style.display = "block";
+            } else {
+                dropdown.style.display = "none";
+            }
+        }
+
+        function closeAllNavDropdowns() {
+            var newDropdown = document.getElementById("newCarsDropdown");
+            var usedDropdown = document.getElementById("usedCarsDropdown");
+            if (newDropdown.style.display === 'block') newDropdown.style.display = 'none';
+            if (usedDropdown.style.display === 'block') usedDropdown.style.display = 'none';
+        }
+
+        function scrollToContact() {
+            const contactDiv = document.getElementById('contactInfo');
+            contactDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close popup when clicking outside (for mobile menu and nav dropdowns)
+        window.addEventListener('click', function(event) {
+            // Mobile Menu
+            var mobileMenu = document.getElementById('mobileNavDropdown');
+            var hamburgerIcon = document.querySelector('.hamburger-menu');
+            if (mobileMenu.style.display === 'block' && !mobileMenu.contains(event.target) && event.target !== hamburgerIcon && !hamburgerIcon.contains(event.target)) {
+                mobileMenu.style.display = 'none';
+            }
+
+            // Nav Dropdowns (New Cars)
+            var newCarsDropdown = document.getElementById("newCarsDropdown");
+            var newLink = document.querySelector('.dropdown-nav > a[onclick="toggleNewDropdown()"]');
+            if (newCarsDropdown.style.display === 'block' && !newCarsDropdown.contains(event.target) && event.target !== newLink && !newLink.contains(event.target)) {
+                newCarsDropdown.style.display = 'none';
+            }
+
+            // Nav Dropdowns (Used Cars)
+            var usedCarsDropdown = document.getElementById('usedCarsDropdown');
+            var usedLink = document.querySelector('.dropdown-nav > a[onclick="toggleUsedDropdown()"]');
+            if (usedCarsDropdown.style.display === 'block' && !usedCarsDropdown.contains(event.target) && event.target !== usedLink && !usedLink.contains(event.target)) {
+                usedCarsDropdown.style.display = 'none';
+            }
+        });
+
+
+    </script>
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+  // Import analytics - if you intend to use it
+  // import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
+
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAU7y3dsDukpG6tnkZZ7VXlE2zeUMccTO0",
+    authDomain: "project-af9c5.firebaseapp.com",
+    projectId: "project-af9c5",
+    storageBucket: "project-af9c5.firebasestorage.app",
+    messagingSenderId: "337562513782",
+    appId: "1:337562513782:web:a8bbebf567d52dc63d8a57",
+    measurementId: "G-EC82H6DWY6"
+  };
+
+  // Initialize Firebase services
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  // const analytics = getAnalytics(app); // Initialize analytics if used
+
+  // Listen for authentication state changes
+  let currentUser = null;
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    if(currentUser) {
+        console.log('User is logged in:', currentUser.uid);
+    } else {
+        console.log('User is logged out');
+    }
+  });
+
+  // Sample car data (in a real app, fetch this from a database)
+  const carData = {
+    '1': { name: 'Honda Model X', description: 'New Honda Model X SUV, 33 Miles, Electric, Manual', price: '$33333', image: 'https://i.postimg.cc/TPwS7fhp/honda-model-x-concept-2001-655c986305b9aHyundai' },
+    '2': { name: 'Toyota Camry', description: 'Used Toyota Camry Sedan, 45000 Miles, Petrol CVT', price: '$18000', image: 'https://i.postimg.cc/cL7546tK/color-Midnight-Black-Metallic.png-1.png' },
+    '3': { name: 'BMW 3 Series', description: 'Certified Pre-Owned BMW 3 Series Sedan, 22000 Miles, Petrol, Auto', price: '$28000', image: 'https://i.postimg.cc/NjTv8g9Y/79851401.jpg' },
+    '4': { name: 'Audi A4', description: 'New Audi A4 SUV, 10 Miles, Petrol, Auto', price: '$40000', image: 'https://i.postimg.cc/j2gt1Ztb/Audi-A4-jpg.webp' },
+    '5': { name: 'Mercedes C-Class', description: 'Used Mercedes C-Class Sedan, 60000 Miles, Diesel, Auto', price: '$22000', image: 'https://i.postimg.cc/7YFNzDrg/The-New-C-Class-front-side-profile1.jpg' },
+    '6': { name: 'Lexus RX', description: 'Certified Pre-Owned Lexus RX SUV, 30000 Miles, Hybrid, Auto', price: '$35000', image: 'https://i.postimg.cc/g0QhCHc3/Lexus-RXh-Promo-mobile-750x500-LEX-RXH-MY25-0005.jpg' },
+    '7': { name: 'Ford Mustang', description: 'Used Ford Mustang Convertible, 50000 Miles, Petrol, Manual', price: '$25000', image: 'https://i.postimg.cc/sX1RF3LB/Ford-Mustang-Shelby-GT500.jpg' },
+    '8': { name: 'Volkswagen Golf', description: 'New Volkswagen Golf Hatchback, 5 Miles, Petrol, Auto', price: '$27000', image: 'https://i.postimg.cc/59hjmrH5/2025-volkswagen-golf-gti-exterior-107-65b00ecf4496e.jpg' },
+    '9': { name: 'Hyundai Sonata', description: 'Certified Pre-Owned Hyundai Sonata Hybrid, 28000 Miles, Hybrid, Auto', price: '$23000', image: 'https://i.postimg.cc/SRJ8zYvy/new-hyundai-sonata-india-launch-price-3-2.jpg' },
+    '10': { name: 'Chevrolet Camaro', description: 'Used Chevrolet Camaro Coupe, 70000 Miles, Petrol, Manual', price: '$15000', image: 'https://i.postimg.cc/nhkzpc3T/2024-chevrolet-camaro-ss-collectors-edition-1-647e1933c6c20.jpg' },
+    '11': { name: 'Jaguar F-PACE', description: 'New Jaguar F-PACE Electric, 2 Miles, Electric, Auto', price: '$55000', image: 'https://i.postimg.cc/mk5fZJ0d/680.webp' },
+    '12': { name: 'Land Rover Range Rover', description: 'Certified Pre-Owned Land Rover Range Rover Truck, 35000 Miles, Diesel, Auto', price: '$48000', image: 'https://i.postimg.cc/nz5fp683/img-944x629-2024-08-08-16-10-53-237439.jpg' }
+  };
+
+  // Retrieve the car ID from the URL query string.
+  const urlParams = new URLSearchParams(window.location.search);
+  const carId = urlParams.get('carId');
+
+  let currentCarDetails = null;
+
+  if (carData[carId]) {
+    currentCarDetails = carData[carId];
+    document.getElementById('carDetailImage').src = carData[carId].image;
+    document.getElementById('carDetailName').textContent = carData[carId].name;
+    document.getElementById('carDetailDescription').textContent = carData[carId].description;
+    document.getElementById('carDetailPrice').textContent = 'Price: ' + carData[carId].price;
+
+    // Log page view analytics - if you are using analytics
+    // logEvent(analytics, 'page_view', {
+    //   page_title: 'Car Details: ' + carData[carId].name,
+    //   page_location: window.location.href,
+    //   car_id: carId,
+    //   car_name: carData[carId].name
+    // });
+
+  } else {
+    document.getElementById('car-details').textContent = 'Car not found.';
+  }
+
+  // Enhanced Order Placement function
+  async function placeOrder() {
+    const orderBtn = document.querySelector('.order-button');
+    const processingMsg = document.querySelector('.order-processing');
+    const errorMsg = document.querySelector('.order-error');
+    const confirmationMsg = document.querySelector('.order-confirmation');
+    const loginRequiredMsg = document.querySelector('.login-required');
+
+    // Reset messages
+    processingMsg.style.display = 'block';
+    errorMsg.style.display = 'none';
+    confirmationMsg.style.display = 'none';
+    loginRequiredMsg.style.display = 'none';
+    orderBtn.disabled = true;
+
+    if (!currentUser) {
+      processingMsg.style.display = 'none';
+      loginRequiredMsg.style.display = 'block';
+      orderBtn.disabled = false;
+      return;
+    }
+
+    if (!currentCarDetails) {
+      processingMsg.style.display = 'none';
+      errorMsg.textContent = 'Car details not loaded. Please refresh the page.';
+      errorMsg.style.display = 'block';
+      orderBtn.disabled = false;
+      return;
+    }
+
+    try {
+      const orderData = {
+        userId: currentUser.uid,
+        userEmail: currentUser.email,
+        carId: carId,
+        carName: currentCarDetails.name,
+        carPrice: currentCarDetails.price,
+        orderDate: serverTimestamp(),
+        status: 'pending'
+      };
+      const docRef = await addDoc(collection(db, "car_orders"), orderData);
+
+      processingMsg.style.display = 'none';
+      confirmationMsg.style.display = 'block';
+      orderBtn.disabled = false;
+
+      // Log purchase analytics - if you are using analytics
+      // logEvent(analytics, 'purchase', {
+      //   currency: 'USD',
+      //   value: parseFloat(currentCarDetails.price.replace('$', '').replace(',', '')),
+      //   items: [{
+      //     item_id: carId,
+      //     item_name: currentCarDetails.name
+      //   }]
+      // });
+
+    } catch (error) {
+      console.error("Error creating order: ", error);
+      processingMsg.style.display = 'none';
+      errorMsg.textContent = "Error creating order: " + error.message;
+      errorMsg.style.display = 'block';
+      orderBtn.disabled = false;
+    }
+  }
+
+  document.querySelector('.order-button').addEventListener('click', placeOrder);
+</script>
+</body>
+</html>
